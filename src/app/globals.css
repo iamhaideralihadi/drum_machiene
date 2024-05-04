@@ -8,26 +8,80 @@
   --background-end-rgb: 255, 255, 255;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.Main{
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(0, 0, 0);
 }
 
-body {
+.drumMachiene{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background:rgb(255, 255, 255) ;
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  gap: 50px;
+  padding: 30px;
+  margin: auto;
+
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+h1{
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1DB954;
+  text-align: center;
+
+}
+
+.display{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 10vh;
+  background: black;
+  color: white;
+  width: 80vw;
+  margin: auto;
+
+}
+
+.butt_view{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+}
+
+.player_controls{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px;
+  width: 80vw;
+  margin: auto;
+}
+
+
+.keyboard_or_clicks_controls{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 80vw;
+  margin: auto;
+}
+
+
+.btnforplaymus{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #1DB954;
+  color: white;
+  border-radius: 10px;
+  padding: 10px;
+  width: 100px;
+  cursor: pointer;
 }
