@@ -85,3 +85,12 @@ h1{
   width: 100px;
   cursor: pointer;
 }
+
+
+.btnforplaymus:hover {
+  background-color: #bbb;
+}
+.btnforplaymus.active {
+  background-color: #4CAF50;
+  color: white; 
+}
