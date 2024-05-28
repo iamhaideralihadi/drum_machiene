@@ -6,22 +6,25 @@ import 'flowbite';
 export default function Home() {
   const [musicLabel, setMusicLabel] = useState("Display Box");
   const [musicVolume, setMusicVolume] = useState(100);
+  const [musicData, setMusicData] = useState([]);
   const audioRef = useRef(null);
-  let musicData = [];
 
-  fetch('/api/musicdata')
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok ' + response.statusText);
-      }
-      return response.json();
-    })
-    .then(data => {
-      musicData = data;
-    })
-    .catch(error => {
-      console.error('There was a problem with the fetch operation:', error);
-    });
+  useEffect(() => {
+    // Fetch music data
+    fetch('/api/musicdata')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();
+      })
+      .then(data => {
+        setMusicData(data);
+      })
+      .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+      });
+  }, []);
 
   useEffect(() => {
     const keyToMusicIndex = {
@@ -32,22 +35,22 @@ export default function Home() {
 
     function playMusic(key) {
       const musicIndex = keyToMusicIndex[key];
-      if (musicIndex !== undefined) {
+      if (musicIndex !== undefined && musicData[musicIndex]) {
         MusicPlayer(musicData[musicIndex]["music_url"], musicData[musicIndex]["label"]);
       } else {
         console.log("Key not mapped to any music track");
       }
     }
 
-    window.addEventListener("keydown", function (e) {
+    const handleKeyDown = (e) => {
       if ($('#powerBtn').prop('checked')) {
         playMusic(e.key);
       } else {
         console.log('Checkbox is not checked!');
       }
-    });
+    };
 
-    document.querySelector('.keyboard_or_clicks_controls').addEventListener('click', function (e) {
+    const handleClick = (e) => {
       if (e.target.classList.contains('btnforplaymus')) {
         if ($('#powerBtn').prop('checked')) {
           playMusic(e.target.getAttribute('data-key'));
@@ -55,7 +58,10 @@ export default function Home() {
           console.log('Checkbox is not checked!');
         }
       }
-    });
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    document.querySelector('.keyboard_or_clicks_controls').addEventListener('click', handleClick);
 
     function MusicPlayer(music_url, music_label) {
       if (audioRef.current) {
@@ -69,7 +75,11 @@ export default function Home() {
       console.log(music_label);
     }
 
-  }, [musicVolume]);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.querySelector('.keyboard_or_clicks_controls').removeEventListener('click', handleClick);
+    };
+  }, [musicData, musicVolume]);
 
   const handleVolumeChange = (e) => {
     const volume = e.target.value;
